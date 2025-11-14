@@ -13,7 +13,12 @@ func main() {
 
 	path := "./data/todo.json"
 
-	tasks := readTasksFromDataSource(path)
+	tasks, err := readTasksFromDataSource(path)
+
+	if err != nil {
+		fmt.Println("Error reading tasks from data source:", err)
+		return
+	}
 
 	switch action {
 	case "add":
@@ -62,12 +67,12 @@ func main() {
 	fmt.Println("\tcomplete taskId")
 }
 
-func readTasksFromDataSource(path string) (tasks []myTask) {
+func readTasksFromDataSource(path string) (tasks []myTask, err error) {
 	file, _ := os.ReadFile(path)
 
-	_ = json.Unmarshal(file, &tasks)
+	err = json.Unmarshal(file, &tasks)
 
-	return tasks
+	return tasks, err
 }
 
 func writeTasksToDataSource(path string, tasks []myTask) {
