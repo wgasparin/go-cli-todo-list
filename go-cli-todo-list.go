@@ -34,7 +34,8 @@ func main() {
 		taskIdArg := os.Args[2]
 		taskId, _ := strconv.Atoi(taskIdArg)
 
-		tasks = completeTask(taskId, tasks)
+		//tasks = completeTask(taskId, tasks)
+		completeTaskWithPointer(taskId, &tasks)
 
 		writeTasksToDataSource(path, tasks)
 		fmt.Println("Task has been completed")
@@ -126,16 +127,14 @@ func removeTask(id int, tasks []myTask) []myTask {
 	return tasks
 }
 
-func completeTask(id int, tasks []myTask) []myTask {
+func completeTaskWithPointer(id int, tasks *[]myTask) {
 
-	for index, task := range tasks {
+	for index, task := range *tasks {
 		if task.ID == id {
-			tasks[index].Completed = true
+			(*tasks)[index].Completed = true
 			break
 		}
 	}
-
-	return tasks
 }
 
 type myTask struct {
